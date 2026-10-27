@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ministry Opportunities | Global Awakening</title>
+<meta name="description" content="Open roles at ministries connected to the Global Awakening Network, for ministry school students and seminary graduates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* Layout: gold notice strip, dark header, blue intro band, gray filter bar, square-cornered listing cards. */
+  :root {
+    --gold: #FFC663;
+    --blue: #015482;
+    --sky: #A7D6EE;
+    --red: #B92132;
+    --ink: #1A1A1A;
+    --text: #222222;
+    --muted: #5b5b5b;
+    --paper: #FFFFFF;
+    --fog: #F2F2F2;
+    --line: #D9D9D9;
+    --display: "Oswald", "Arial Narrow", Arial, sans-serif;
+    --body: "Fira Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--text);
+    font: 400 16px/1.55 var(--body);
+  }
+  a { color: var(--blue); }
+  .wrap {
+    max-width: 960px;
+    margin: 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  :focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+  .strip { background: var(--gold); color: #000; font: 500 12px/1 var(--body); letter-spacing: .06em; text-transform: uppercase; padding: 10px 0; }
+  .strip .wrap { display: block; }
+
+  header.top { background: var(--ink); color: #fff; padding: 18px 0; }
+  .brand { font: 700 22px/1 var(--display); letter-spacing: .12em; text-transform: uppercase; }
+  .brand small { display: block; margin-top: 6px; font: 400 13px/1 var(--display); letter-spacing: .22em; color: var(--gold); }
+
+  .intro { background: var(--blue); color: #fff; padding: 44px 0 40px; }
+  .intro h1 { margin: 0 0 12px; font: 700 clamp(30px, 6vw, 48px)/1.08 var(--display); text-transform: uppercase; text-wrap: balance; }
+  .intro p { margin: 0 0 22px; max-width: 60ch; font-size: 18px; color: #EAF5FB; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .btn {
+    display: inline-block;
+    border: 0;
+    border-radius: 1px;
+    background: var(--gold);
+    color: #000;
+    font: 500 14px/1 var(--body);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 14px 20px;
+    cursor: pointer;
+  }
+  .btn:hover { background: #ffd382; }
+  .btn.ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 2px var(--sky); }
+  .btn.ghost:hover { background: rgba(255,255,255,.1); }
+  .btn.small { padding: 11px 14px; font-size: 13px; }
+  .btn.line { background: var(--paper); box-shadow: inset 0 0 0 2px var(--ink); }
+  .btn.line:hover { background: var(--fog); }
+
+  .filters { background: var(--fog); border-bottom: 1px solid var(--line); padding: 18px 0; }
+  .filters form { display: grid; gap: 12px; grid-template-columns: 2fr 1fr auto; align-items: end; }
+  .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .field label { font: 500 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .field input, .field select {
+    width: 100%;
+    font: 400 16px/1.2 var(--body);
+    color: var(--text);
+    background: var(--paper);
+    border: 1px solid #b9b9b9;
+    border-radius: 1px;
+    padding: 12px;
+  }
+
+  main { padding: 28px 0 56px; }
+  .status { margin: 0 0 18px; color: var(--muted); font-size: 15px; }
+  .notice { margin: 0 0 20px; padding: 14px 16px; background: #FFF4DC; border: 1px solid var(--gold); font-size: 15px; }
+  .notice.err { background: #FBE9EB; border-color: var(--red); }
+
+  .list { display: grid; gap: 16px; padding: 0; margin: 0; list-style: none; }
+  .card { border: 1px solid var(--line); background: var(--paper); padding: 20px; min-width: 0; }
+  .card-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .pill { font: 500 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; padding: 6px 8px; background: var(--sky); color: #04364f; }
+  .pill.warn { background: var(--red); color: #fff; }
+  .card h2 { margin: 0; font: 700 24px/1.15 var(--display); text-transform: uppercase; letter-spacing: .02em; overflow-wrap: anywhere; }
+  .who { margin: 6px 0 0; font-weight: 500; }
+  .meta { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .desc { margin: 14px 0 0; white-space: pre-line; overflow-wrap: anywhere; }
+  .desc.clamped { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .more { margin-top: 6px; padding: 0; border: 0; background: none; color: var(--blue); font: 500 14px var(--body); cursor: pointer; text-decoration: underline; }
+  .apply { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .apply .how { flex: 1 1 100%; margin: 0; font-size: 15px; overflow-wrap: anywhere; user-select: text; }
+  .empty { padding: 36px 16px; text-align: center; border: 1px dashed #b9b9b9; color: var(--muted); }
+
+  footer { background: var(--ink); color: #cfcfcf; padding: 28px 0; font-size: 14px; }
+  footer p { margin: 0 0 10px; max-width: 70ch; }
+  footer a { color: var(--gold); }
+
+  @media (max-width: 640px) {
+    .filters form { grid-template-columns: 1fr; }
+    .card { padding: 16px; }
+    .card h2 { font-size: 21px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<div class="strip"><div class="wrap">Open roles from ministries in the Global Awakening Network</div></div>
+<header class="top"><div class="wrap"><div class="brand">Global Awakening<small>Ministry Opportunities</small></div></div></header>
+
+<section class="intro">
+  <div class="wrap">
+    <h1>Find your next place to serve</h1>
+    <p>Roles posted by ministries connected to the Network, for ministry school students and seminary graduates. Contact the ministry directly to apply.</p>
+    <div class="actions">
+      <a class="btn" id="postBtn" href="#" hidden target="_blank" rel="noopener noreferrer">Post an opening</a>
+      <a class="btn ghost" href="#results">Browse openings</a>
+    </div>
+  </div>
+</section>
+
+<section class="filters" aria-label="Filter openings">
+  <div class="wrap">
+    <form id="filterForm" onsubmit="return false">
+      <div class="field">
+        <label for="q">Search</label>
+        <input id="q" type="search" placeholder="Role, ministry, city, country" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="type">Type</label>
+        <select id="type"><option value="">All types</option></select>
+      </div>
+      <button class="btn line" type="button" id="clear">Clear</button>
+    </form>
+  </div>
+</section>
+
+<main id="results">
+  <div class="wrap">
+    <div id="notice" hidden></div>
+    <p class="status" id="status" aria-live="polite">Loading openings...</p>
+    <ul class="list" id="list"></ul>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Global Awakening shares these listings as a courtesy to the Network. Each ministry runs its own hiring and is responsible for its posting. Contact the ministry directly, and use your own judgment before sharing personal information or committing to a role.</p>
+    <p>Global Awakening assumes no responsibility and disclaims all liability for the content, accuracy, completeness, legality, reliability, or availability of any job postings, related info, or correspondence between potential employers and employees.</p>
+    <p id="reportLine" hidden>See something that looks wrong? <a id="reportLink" href="#"></a></p>
+  </div>
+</footer>
+
+<script>
+/* ------------------------------------------------------------------
+   CONFIG: fill these in after following SETUP.md.
+   ------------------------------------------------------------------ */
+const CONFIG = {
+  // "Publish to web" CSV link for the Board tab of your Google Sheet.
+  SHEET_CSV_URL: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTyI-wELPbRq5GfQmsSTfJHFXGdU8Ovmk-5ghoUci8u9hCycPa1htZqIPxyJBl1xLqgnKRfzCbbq5hF/pub?gid=1556236260&single=true&output=csv",
+  // Link to the Google Form ministries use to submit an opening.
+  FORM_URL: "https://docs.google.com/forms/d/e/1FAIpQLSfKoWYRLSOvU86TJS472Ul8kMk2DtJK8tbSknnF9sjfDi9g_w/viewform",
+  // Optional address shown in the footer for reporting a listing.
+  REPORT_EMAIL: "",
+  // A listing with no closing date is hidden after this many days.
+  MAX_AGE_DAYS: 60
+};
+
+/* Shown only while SHEET_CSV_URL is empty. Fictional examples. */
+const SAMPLE_ROWS = [
+  { ministry: "Example Church Plant", role: "Associate Pastor of Discipleship", location: "Nashville, TN", type: "Full-time",
+    description: "Lead small groups and mentor new believers.\nSeminary degree preferred. Heart for healing ministry.",
+    apply: "jobs@example.org", jobLink: "https://example.org/job-description.pdf", closing: "", posted: daysAgo(3) },
+  { ministry: "Example Missions Network", role: "Short-term Team Coordinator", location: "Remote, with travel to East Africa", type: "Missionary / support-raised",
+    description: "Coordinate teams of 8 to 12 for two-week outreach trips.\nSupport-raising training is provided.",
+    apply: "https://example.org/apply", closing: daysAhead(5), posted: daysAgo(10) },
+  { ministry: "Example Youth Ministry", role: "Summer Intern", location: "Charlotte, NC", type: "Internship",
+    description: "Ten weeks of hands-on youth ministry. Housing stipend included.",
+    apply: "Email Pastor Sam: sam@example.org", closing: daysAhead(40), posted: daysAgo(1) }
+];
+
+function daysAgo(n){ const d = new Date(); d.setDate(d.getDate()-n); return d; }
+function daysAhead(n){ const d = new Date(); d.setDate(d.getDate()+n); return d; }
+
+/* ---------- CSV parsing (handles quotes and line breaks in cells) ---------- */
+function parseCSV(text){
+  const rows = []; let row = [], cell = "", q = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (q){
+      if (c === '"'){ if (text[i+1] === '"'){ cell += '"'; i++; } else q = false; }
+      else cell += c;
+    } else if (c === '"') q = true;
+    else if (c === ","){ row.push(cell); cell = ""; }
+    else if (c === "\n" || c === "\r"){
+      if (c === "\r" && text[i+1] === "\n") i++;
+      row.push(cell); cell = "";
+      if (row.some(v => v.trim() !== "")) rows.push(row);
+      row = [];
+    } else cell += c;
+  }
+  row.push(cell);
+  if (row.some(v => v.trim() !== "")) rows.push(row);
+  return rows;
+}
+
+function parseDate(s){
+  s = (s || "").trim();
+  if (!s) return null;
+  let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (m) return new Date(+m[1], +m[2]-1, +m[3]);
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
+  if (m) return new Date(+m[3], +m[1]-1, +m[2], +(m[4]||0), +(m[5]||0));
+  const d = new Date(s);
+  return isNaN(d) ? null : d;
+}
+
+function rowsToListings(rows){
+  if (!rows.length) return [];
+  const head = rows[0].map(h => h.trim().toLowerCase());
+  const col = key => head.findIndex(h => h.startsWith(key));
+  const ix = { ts: col("timestamp"), ministry: col("ministry"), role: col("role"), location: col("location"),
+               type: col("type"), description: col("description"), apply: col("how to apply"), closing: col("closing"),
+               jobdoc: col("job description") };
+  const get = (r, k) => (ix[k] >= 0 && r[ix[k]] ? r[ix[k]].trim() : "");
+  return rows.slice(1).map(r => ({
+    ministry: get(r,"ministry"), role: get(r,"role"), location: get(r,"location"), type: get(r,"type"),
+    description: get(r,"description"), apply: get(r,"apply"), jobLink: get(r,"jobdoc"),
+    closing: parseDate(get(r,"closing")), posted: parseDate(get(r,"ts"))
+  })).filter(l => l.role && l.ministry);
+}
+
+/* ---------- Visibility rules ---------- */
+function isLive(l){
+  const now = new Date(); const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const closing = l.closing instanceof Date ? l.closing : parseDate(l.closing);
+  if (closing) return closing >= today;
+  if (l.posted instanceof Date){
+    return (now - l.posted) / 86400000 <= CONFIG.MAX_AGE_DAYS;
+  }
+  return true;
+}
+
+/* ---------- Rendering (all text set with textContent) ---------- */
+const $ = id => document.getElementById(id);
+let ALL = [];
+
+function el(tag, cls, text){
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+const fmt = d => d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+function relPosted(d){
+  const n = Math.floor((new Date() - d) / 86400000);
+  if (n <= 0) return "Posted today";
+  if (n === 1) return "Posted yesterday";
+  return "Posted " + n + " days ago";
+}
+
+/* Accepts http(s) links only. A bare "example.org/jd" gets https:// added. Anything else is dropped. */
+function safeUrl(s){
+  s = (s || "").trim();
+  if (!s || /\s/.test(s)) return null;
+  if (/^https?:\/\//i.test(s)) return s;
+  if (/^[a-z0-9.-]+\.[a-z]{2,}(\/\S*)?$/i.test(s)) return "https://" + s;
+  return null;
+}
+
+function addApply(card, raw, jobLink){
+  const box = el("div", "apply");
+  if (raw){
+    const how = el("p", "how", "How to apply: " + raw);
+    box.appendChild(how);
+    const email = raw.match(/[^\s@<>()]+@[^\s@<>()]+\.[^\s@<>(),;]+/);
+    const url = raw.match(/https?:\/\/[^\s<>()]+/i);
+    if (url){
+      const a = el("a", "btn small", "Open application");
+      a.href = url[0]; a.target = "_blank"; a.rel = "noopener noreferrer nofollow";
+      box.appendChild(a);
+    }
+    if (email){
+      const a = el("a", "btn small", "Email"); a.href = "mailto:" + email[0];
+      box.appendChild(a);
+      const b = el("button", "btn small line", "Copy email"); b.type = "button";
+      b.addEventListener("click", async () => {
+        try { await navigator.clipboard.writeText(email[0]); b.textContent = "Copied"; }
+        catch (e) { b.textContent = "Select the address above"; }
+        setTimeout(() => b.textContent = "Copy email", 2000);
+      });
+      box.appendChild(b);
+    }
+  } else {
+    box.appendChild(el("p", "how", "Contact details were not provided."));
+  }
+  const jd = safeUrl(jobLink);
+  if (jd){
+    const a = el("a", "btn small line", "View full job description");
+    a.href = jd; a.target = "_blank"; a.rel = "noopener noreferrer nofollow";
+    box.appendChild(a);
+  }
+  card.appendChild(box);
+}
+
+function render(){
+  const q = $("q").value.trim().toLowerCase();
+  const t = $("type").value;
+  const list = $("list"); list.textContent = "";
+  const shown = ALL.filter(l =>
+    (!t || l.type === t) &&
+    (!q || [l.role, l.ministry, l.location, l.type, l.description].join(" ").toLowerCase().includes(q))
+  );
+  $("status").textContent = shown.length === 0 ? "" :
+    shown.length + (shown.length === 1 ? " opening" : " openings") + (q || t ? " match your filters" : "");
+  if (!shown.length){
+    list.appendChild(el("li", "empty", ALL.length ? "No openings match. Try clearing the filters." : "No openings are posted right now. Check back soon."));
+    return;
+  }
+  shown.forEach(l => {
+    const li = el("li", "card");
+    const head = el("div", "card-head");
+    if (l.type) head.appendChild(el("span", "pill", l.type));
+    const closing = l.closing instanceof Date ? l.closing : parseDate(l.closing);
+    if (closing){
+      const days = Math.ceil((closing - new Date()) / 86400000);
+      head.appendChild(el("span", days <= 7 ? "pill warn" : "pill", "Closes " + fmt(closing)));
+    }
+    li.appendChild(head);
+    li.appendChild(el("h2", null, l.role));
+    li.appendChild(el("p", "who", l.ministry));
+    const bits = [];
+    if (l.location) bits.push(l.location);
+    if (l.posted instanceof Date) bits.push(relPosted(l.posted));
+    if (bits.length) li.appendChild(el("p", "meta", bits.join("  |  ")));
+    if (l.description){
+      const d = el("p", "desc clamped", l.description);
+      li.appendChild(d);
+      if (l.description.length > 220 || l.description.split("\n").length > 3){
+        const b = el("button", "more", "Show more"); b.type = "button";
+        b.addEventListener("click", () => {
+          const open = d.classList.toggle("clamped");
+          b.textContent = open ? "Show more" : "Show less";
+        });
+        li.appendChild(b);
+      } else d.classList.remove("clamped");
+    }
+    addApply(li, l.apply, l.jobLink);
+    list.appendChild(li);
+  });
+}
+
+function fillTypes(){
+  const types = [...new Set(ALL.map(l => l.type).filter(Boolean))].sort();
+  const sel = $("type");
+  types.forEach(t => { const o = document.createElement("option"); o.value = t; o.textContent = t; sel.appendChild(o); });
+}
+
+function showNotice(msg, isErr){
+  const n = $("notice"); n.hidden = false; n.className = "notice" + (isErr ? " err" : ""); n.textContent = msg;
+}
+
+async function init(){
+  if (CONFIG.FORM_URL){ const b = $("postBtn"); b.href = CONFIG.FORM_URL; b.hidden = false; }
+  if (CONFIG.REPORT_EMAIL){
+    $("reportLine").hidden = false;
+    const a = $("reportLink"); a.href = "mailto:" + CONFIG.REPORT_EMAIL; a.textContent = CONFIG.REPORT_EMAIL;
+  }
+  if (!CONFIG.SHEET_CSV_URL){
+    showNotice("Sample listings. These are examples. Add your Google Sheet link in the CONFIG block (see SETUP.md) to show real openings.", false);
+    ALL = SAMPLE_ROWS.filter(isLive);
+  } else {
+    try {
+      const res = await fetch(CONFIG.SHEET_CSV_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      ALL = rowsToListings(parseCSV(await res.text())).filter(isLive);
+      ALL.sort((a, b) => (b.posted || 0) - (a.posted || 0));
+    } catch (e){
+      $("status").textContent = "";
+      showNotice("The openings could not be loaded right now. Please try again in a few minutes.", true);
+      return;
+    }
+  }
+  fillTypes();
+  render();
+}
+
+$("q").addEventListener("input", render);
+$("type").addEventListener("change", render);
+$("clear").addEventListener("click", () => { $("q").value = ""; $("type").value = ""; render(); });
+init();
+</script>
+</body>
+</html>
