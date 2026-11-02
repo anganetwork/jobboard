@@ -1,4 +1,4 @@
-=<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -106,6 +106,8 @@
   .more { margin-top: 6px; padding: 0; border: 0; background: none; color: var(--blue); font: 500 14px var(--body); cursor: pointer; text-decoration: underline; }
   .apply { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .apply .how { flex: 1 1 100%; margin: 0; font-size: 15px; overflow-wrap: anywhere; user-select: text; }
+  .jd-preview { flex: 1 1 100%; min-width: 0; }
+  .jd-preview iframe { display: block; width: 100%; height: min(75vh, 720px); border: 1px solid var(--line); background: var(--fog); }
   .empty { padding: 36px 16px; text-align: center; border: 1px dashed #b9b9b9; color: var(--muted); }
 
   footer { background: var(--ink); color: #cfcfcf; padding: 28px 0; font-size: 14px; }
@@ -187,7 +189,7 @@ const CONFIG = {
 const SAMPLE_ROWS = [
   { ministry: "Example Church Plant", role: "Associate Pastor of Discipleship", location: "Nashville, TN", type: "Full-time",
     description: "Lead small groups and mentor new believers.\nSeminary degree preferred. Heart for healing ministry.",
-    apply: "jobs@example.org", jobLink: "https://example.org/job-description.pdf", closing: "", posted: daysAgo(3) },
+    apply: "jobs@example.org", jobLink: "https://drive.google.com/open?id=EXAMPLE_FILE_ID_123", closing: "", posted: daysAgo(3) },
   { ministry: "Example Missions Network", role: "Short-term Team Coordinator", location: "Remote, with travel to East Africa", type: "Missionary / support-raised",
     description: "Coordinate teams of 8 to 12 for two-week outreach trips.\nSupport-raising training is provided.",
     apply: "https://example.org/apply", closing: daysAhead(5), posted: daysAgo(10) },
@@ -224,6 +226,12 @@ function parseCSV(text){
 function parseDate(s){
   s = (s || "").trim();
   if (!s) return null;
+  // A spreadsheet date that lost its formatting arrives as a serial number (days since 12/30/1899).
+  if (/^\d{5}(\.\d+)?$/.test(s)){
+    const d = new Date(1899, 11, 30);
+    d.setTime(d.getTime() + parseFloat(s) * 86400000);
+    return d;
+  }
   let m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
   if (m) return new Date(+m[1], +m[2]-1, +m[3]);
   m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2}))?/);
@@ -279,11 +287,19 @@ function relPosted(d){
 
 /* Accepts http(s) links only. A bare "example.org/jd" gets https:// added. Anything else is dropped. */
 function safeUrl(s){
-  s = (s || "").trim();
-  if (!s || /\s/.test(s)) return null;
+  // Form file uploads can hold several links separated by commas; use the first.
+  s = (s || "").trim().split(/[\s,]+/)[0];
+  if (!s) return null;
   if (/^https?:\/\//i.test(s)) return s;
   if (/^[a-z0-9.-]+\.[a-z]{2,}(\/\S*)?$/i.test(s)) return "https://" + s;
   return null;
+}
+
+/* Pulls the file ID out of a Google Drive link from a form upload. */
+function driveFileId(u){
+  let m = u.match(/^https:\/\/drive\.google\.com\/open\?id=([A-Za-z0-9_-]{10,})/);
+  if (!m) m = u.match(/^https:\/\/drive\.google\.com\/file\/d\/([A-Za-z0-9_-]{10,})/);
+  return m ? m[1] : null;
 }
 
 function addApply(card, raw, jobLink){
@@ -313,8 +329,34 @@ function addApply(card, raw, jobLink){
     box.appendChild(el("p", "how", "Contact details were not provided."));
   }
   const jd = safeUrl(jobLink);
-  if (jd){
-    const a = el("a", "btn small line", "View full job description");
+  const driveId = jd ? driveFileId(jd) : null;
+  if (driveId){
+    // Uploaded through the form: preview the file right on the board.
+    const toggle = el("button", "btn small line", "View job description");
+    toggle.type = "button";
+    toggle.setAttribute("aria-expanded", "false");
+    const open = el("a", "btn small line", "Open in new tab");
+    open.href = "https://drive.google.com/file/d/" + driveId + "/view";
+    open.target = "_blank"; open.rel = "noopener noreferrer nofollow";
+    const wrap = el("div", "jd-preview"); wrap.hidden = true;
+    toggle.addEventListener("click", () => {
+      const show = wrap.hidden;
+      if (show && !wrap.firstChild){
+        const f = document.createElement("iframe");
+        f.src = "https://drive.google.com/file/d/" + driveId + "/preview";
+        f.title = "Job description file";
+        f.loading = "lazy";
+        wrap.appendChild(f);
+      }
+      wrap.hidden = !show;
+      toggle.textContent = show ? "Hide job description" : "View job description";
+      toggle.setAttribute("aria-expanded", String(show));
+    });
+    box.appendChild(toggle);
+    box.appendChild(open);
+    box.appendChild(wrap);
+  } else if (jd){
+    const a = el("a", "btn small line", "View job description");
     a.href = jd; a.target = "_blank"; a.rel = "noopener noreferrer nofollow";
     box.appendChild(a);
   }
